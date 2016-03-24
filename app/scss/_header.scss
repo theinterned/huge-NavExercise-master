@@ -1,10 +1,11 @@
 @import "variables";
 @import "mixins";
+$header-heigth: 6rem;
 
 .header {
   background-color: $c-magenta;
-  padding: 2rem 2.4rem;
-  min-height: 6rem;
+  padding: $gridline $baseline;
+  min-height: $header-heigth;
   &__nav {
     background-color: green;
     width: 80%;
@@ -19,7 +20,7 @@
   @include replace-text(
     "url('/images/toggle-open.svg') 50%/100% no-repeat",
     $width: 7.2rem,
-    $height: 6rem
+    $height: $header-heigth
   );
   position: absolute;
   top: 0;
@@ -28,9 +29,11 @@
 }
 .huge_logo {
   margin: 0;
-  width: 5rem;
-  height: 2rem;
-  background: url('/images/HUGE-white.png') 0/100% no-repeat;
+  @include replace-text(
+    "url('/images/HUGE-white.png') 0/100% no-repeat",
+    $width: 5rem,
+    $height: 2rem
+  );
   .hide { display: none; }
 }
 

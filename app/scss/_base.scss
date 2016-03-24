@@ -1,3 +1,5 @@
+@import "variables";
+
 html {
   box-sizing: border-box;
 }
@@ -14,5 +16,7 @@ html {
 }
 body {
   background: white;
-  font: 1.4rem/1.714285714 Galaxie; 
+  font-size: 1.4rem;
+  line-height: $baseline;
+  font-family: Galaxie;
 }
