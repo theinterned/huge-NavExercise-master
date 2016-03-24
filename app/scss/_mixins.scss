@@ -1,0 +1,9 @@
+@mixin replace-text ($bg, $height:0, $width:0) {
+  border: 0;
+  font: 0/0 a;
+  text-shadow: none;
+  color: transparent;
+  background: #{$bg};
+  height: $height;
+  width: $width;
+}
