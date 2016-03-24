@@ -1,0 +1,41 @@
+@import "variables";
+@import "mixins";
+
+.header {
+  background-color: $c-magenta;
+  padding: 2rem 2.4rem;
+  min-height: 6rem;
+  &__nav {
+    background-color: green;
+    width: 80%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translateX(-100%);
+  }
+}
+.hamburger {
+  display: block;
+  @include replace-text(
+    "url('/images/toggle-open.svg') 50%/100% no-repeat",
+    $width: 7.2rem,
+    $height: 6rem
+  );
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+}
+.huge_logo {
+  margin: 0;
+  width: 5rem;
+  height: 2rem;
+  background: url('/images/HUGE-white.png') 0/100% no-repeat;
+  .hide { display: none; }
+}
+
+.nav {
+  &__list {
+    margin: 0;
+  }
+}
