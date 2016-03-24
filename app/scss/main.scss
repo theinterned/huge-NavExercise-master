@@ -1,13 +1,12 @@
+@import "vendor/normalize";
 @import "fonts";
+@import "base";
 
 $c-magenta: #ec008c;
 $c-light-gray: #eee;
 $c-translucent-black: rgba(0, 0, 0, 0.5);
 
-body {
-  background: $c-magenta;
-  color: #fff;
-}
+
 
 h1 {
   position: absolute;
