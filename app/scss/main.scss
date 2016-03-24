@@ -1,7 +1,11 @@
-@import "fonts.css";
+@import "fonts";
+
+$c-magenta: #ec008c;
+$c-light-gray: #eee;
+$c-translucent-black: rgba(0, 0, 0, 0.5);
 
 body {
-  background: #ec008c;
+  background: $c-magenta;
   color: #fff;
 }
 

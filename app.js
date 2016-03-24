@@ -5,7 +5,9 @@ var api = require('./api');
 var app = express();
 
 app.use(logger('dev'));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'app')));
 app.use('/api', api);
+
+app.listen('3000');
 
 module.exports = app;
