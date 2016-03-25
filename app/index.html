@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="/css/index.css">
 </head>
 <body class="menu_open">
-  <div class="page_screen" ></div>
+  <div class="page_mask" ></div>
   <header class="header" role="banner">
     <a class="hamburger" id="hamburger">Menu</a>
     <nav class="header__nav" role="navigation" id="main_nav">
@@ -15,10 +15,10 @@
       </div>
       <ul class="nav__list">
         <li class="nav__item">
-          <a class="nav__link" href="{url}"><span class="nav__label">label</span></a>
+          <a class="nav__link" href="{url}"><span class="nav__label">Link</span></a>
         </li>
         <li class="nav__item">
-          <a class="nav__link" href="{url}"><span class="nav__label">label</span></a>
+          <a class="nav__link--parent"><span class="nav__label">Parent link</span></a>
           <ul class="nav__list--secondary">
             <li class="nav__item--secondary">
               <a class="nav__link" href="{url}"><span class="nav__label">label</span></a>
@@ -29,7 +29,7 @@
           </ul>
         </li>
         <li class="nav__item">
-          <a class="nav__link" href="{url}"><span class="nav__label">label</span></a>
+          <a class="nav__link" href="{url}"><span class="nav__label">Another label</span></a>
         </li>
       </ul>
     </nav>

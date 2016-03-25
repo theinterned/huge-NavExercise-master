@@ -65,13 +65,21 @@ onready(function(){
     success: onSuccess
   });
   // add event listeners
-  var hamburger = document.getElementById('hamburger');
+  var i;
   var body = document.body;
+  var hamburger = document.getElementById('hamburger');
+  var parentLinks = document.getElementsByClassName('nav__link--parent');
 
   // DOM Event handlers
   // Toggles a class `.menu_open` on the body. Used to drive the off-canvas menu on smaller screens
-  function toggleMenuOpenState(e) {
+  function toggleOffCanvasMenu(e) {
     toggleClass(body, 'menu_open');
   }
-  hamburger.addEventListener('click', toggleMenuOpenState);
+  hamburger.addEventListener('click', toggleOffCanvasMenu);
+  function toggleSubMenu(e) {
+    toggleClass(this.parentElement, 'open');
+  }
+  for (i = 0; i < parentLinks.length; i++) {
+    parentLinks[i].addEventListener('click', toggleSubMenu);
+  }
 });

@@ -52,6 +52,11 @@ $menu-transition-duration: .3s;
       padding: 0;
       list-style: none;
     }
+    &--secondary {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height $menu-transition-duration;
+    }
   }
   &__item {
     font-family: HUGEAvantGardeBold;
@@ -60,15 +65,22 @@ $menu-transition-duration: .3s;
       font-family: Galaxie;
       font-size: 1.6rem;
     }
+    &.open {
+      > .nav__list--secondary {
+        max-height: 999px;
+      }
+    }
   }
-  &__link{
-    text-decoration: none;
-    display: block;
-    padding: $baseline/2 $baseline;
-    color: black;
-    &:hover {
-      color: $c-magenta;
-      background-color: $c-light-gray;
+  &__link {
+    &, &--parent {
+      text-decoration: none;
+      display: block;
+      padding: $baseline/2 $baseline;
+      color: black;
+      &:hover {
+        color: $c-magenta;
+        background-color: $c-light-gray;
+      }
     }
   }
 }
@@ -84,7 +96,7 @@ $menu-transition-duration: .3s;
   transform: translateX(-100%);
 }
 
-.page_screen {
+.page_mask {
   position: fixed;
   top: $header-heigth;
   bottom: 0;
@@ -103,13 +115,13 @@ $menu-transition-duration: .3s;
 // the off canvas menu transition
 body.menu_open {
   overflow: hidden;
-  .header, .main, .page_screen {
+  .header, .main, .page_mask {
     transform: translateX(80%);
   }
   .hamburger {
     background-image: url("/images/toggle-close.svg")
   }
-  .page_screen {
+  .page_mask {
     opacity: 1;
     pointer-events: all;
     z-index: 1;
