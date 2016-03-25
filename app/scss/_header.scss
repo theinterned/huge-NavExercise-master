@@ -76,14 +76,15 @@ $page-peak-width: calc(100% - 7.2rem);
 .nav {
   &__list {
     height: calc(100% - #{$header-heigth});
+    padding: .5*$baseline 0;
     overflow: auto;
     &, &--secondary {
       margin: 0;
-      padding: 0;
       list-style: none;
     }
     &--secondary {
       max-height: 0;
+      padding: 0;
       overflow: hidden;
       transition: max-height $menu-transition-duration;
     }
@@ -135,6 +136,7 @@ $page-peak-width: calc(100% - 7.2rem);
     &__list {
       height: auto;
       overflow: visible;
+      padding: 0;
     }
     &__item {
       float: left;
@@ -152,13 +154,16 @@ $page-peak-width: calc(100% - 7.2rem);
         }
       }
     }
+    &__list--secondary {
+      position: absolute;
+      background-color: white;
+    }
     &__item.open > &__link--parent {
       background-color: white;
       color: $c-magenta
     }
-    &__list--secondary {
-      position: absolute;
-      background-color: white;
+    &__item.open > &__list--secondary {
+      padding: .5*$baseline 0;
     }
   }
 }
@@ -166,7 +171,8 @@ $page-peak-width: calc(100% - 7.2rem);
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 1.2rem;
   line-height: 1.6rem;
-  text-align: center;
+  padding: 1.6rem $baseline;
+  background: white;
   position: fixed;
   bottom: 0;
   left: 0;
