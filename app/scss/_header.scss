@@ -199,21 +199,23 @@ $page-peak-width: calc(100% - 7.2rem);
 }
 
 // the off canvas menu transition
-body.menu_open {
-  overflow: hidden;
-  .header, .main, .page_mask {
-    transform: translateX($page-peak-width);
-  }
-  .hamburger {
-    background-image: url("/images/toggle-close.svg")
-  }
-  .page_mask {
-    opacity: 1;
-    pointer-events: all;
-    z-index: 1;
-  }
-  .header__nav,
-  .copyright {
-    transform: translateX(0);
+@media #{$mq-less-then-desktop} {
+  body.menu_open {
+    overflow: hidden;
+    .header, .main, .page_mask {
+      transform: translateX($page-peak-width);
+    }
+    .hamburger {
+      background-image: url("/images/toggle-close.svg")
+    }
+    .page_mask {
+      opacity: 1;
+      pointer-events: all;
+      z-index: 1;
+    }
+    .header__nav,
+    .copyright {
+      transform: translateX(0);
+    }
   }
 }

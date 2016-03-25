@@ -9,3 +9,4 @@ $max-width: 96.8rem;
 
 $bp-desktop: 600px; //768px;
 $mq-desktop: "screen and (min-width: #{$bp-desktop})";
+$mq-less-then-desktop: "screen and (max-width: #{$bp-desktop})";
