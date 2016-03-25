@@ -3,6 +3,7 @@
 
 $header-heigth: 6rem;
 $menu-transition-duration: .15s;
+$page-peak-width: calc(100% - 7.2rem);
 
 
 .header {
@@ -10,7 +11,7 @@ $menu-transition-duration: .15s;
   padding: $gridline $baseline;
   min-height: $header-heigth;
   &__nav {
-    width: 80%;
+    width: $page-peak-width;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -114,7 +115,7 @@ $menu-transition-duration: .15s;
   position: fixed;
   bottom: 0;
   left: 0;
-  width: 80%;
+  width: $page-peak-width;
   transform: translateX(-100%);
 }
 
@@ -138,7 +139,7 @@ $menu-transition-duration: .15s;
 body.menu_open {
   overflow: hidden;
   .header, .main, .page_mask {
-    transform: translateX(80%);
+    transform: translateX($page-peak-width);
   }
   .hamburger {
     background-image: url("/images/toggle-close.svg")
