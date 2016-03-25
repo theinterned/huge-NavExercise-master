@@ -48,28 +48,38 @@ $page-peak-width: calc(100% - 7.2rem);
 }
 
 .huge_logo {
-  margin: 0;
-  @include replace-text(
-    "url('/images/HUGE-white.png') 0/100% no-repeat",
-    $width: 5rem,
-    $height: 2rem
-  );
-  .hide { display: none; }
-  &__wrap {
-    background-color: $c-magenta;
-    width: 101%; // 1% extra to cover the seam between the logo-wrap and the header
-    height: $header-heigth;
-    padding: $gridline $baseline;
+  display: block;
+  background-color: $c-magenta;
+  width: 100.1%; // 1% extra to cover the seam between the logo-wrap and the header
+  height: $header-heigth;
+  padding: $gridline $baseline;
+  &__type {
+    margin: 0;
+    @include replace-text(
+      "url('/images/HUGE.png') 0 100%/100% no-repeat",
+      $width: 5rem,
+      $height: 2rem
+    );
+    .hide { display: none; }
+  }
+  &:hover {
+    background-color: $c-light-gray;
+    .huge_logo__type {
+      background-position-y: 0;
+    }
   }
   @media #{$mq-desktop} {
-    height: 2.4rem;
-    width: 6rem;
-    &__wrap {
-      width: auto;
-      height: auto;
-      padding: $baseline;
-      padding-right: 2*$baseline;
-      float: left;
+    width: auto;
+    height: auto;
+    padding: $baseline;
+    padding-right: 2*$baseline;
+    float: left;
+    &__type {
+      height: 2.4rem;
+      width: 6rem;
+    }
+    &:hover {
+      background-color: white;
     }
   }
 }
