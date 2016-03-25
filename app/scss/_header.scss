@@ -23,6 +23,7 @@ $page-peak-width: calc(100% - 7.2rem);
     transform: translateX(-100%);
     @media #{$mq-desktop} {
       width: 100%;
+      bottom: auto;
       transform: translateX(0);
       body.submenu-open & {
         z-index: 1;

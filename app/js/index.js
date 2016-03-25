@@ -57,6 +57,7 @@ function createNavList(items, secondary) {
   listEl = listStart + itemList.join('\n') + listEnd;
   return listEl;
 }
+function queryForMenuLinks(){ return document.getElementsByClassName('nav__link--parent'); }
 var hugeLogoEl; // we're gong to cahce the innerHTML of the main nav once so we canre-aply it ove rand over
 function buildNav(items) {
   var mainNav = document.getElementById('main_nav');
@@ -65,24 +66,47 @@ function buildNav(items) {
   mainNav.innerHTML = hugeLogoEl + list;
   // now that we've built the list ...
   // 1. cache the list of parent links
-  var parentLinks = document.getElementsByClassName('nav__link--parent');
+  var parentLinks = queryForMenuLinks();
   // 2. use that cached list inside the scope of this callback event handler
-  function toggleSubMenu(e) {
-    var _this = this;
-    // close any other open sub-nav
-    [].map.call(parentLinks, function(link){
-      if (link === _this) { return; }
-      link.parentElement.classList.remove('open');
-    });
-    // open this one if it's closed; close it if its open!
-    var parent = this.parentElement;
-    toggleClass(parent, 'open');
-    toggleClass(document.body, 'submenu-open', !parent.classList.contains('open'));
-  }
+  function cachedToggleSubMenu(e) { toggleSubMenu.call(this, e, parentLinks); }
   // 3. attach the event handler to the lis of links
   for (i = 0; i < parentLinks.length; i++) {
-    parentLinks[i].addEventListener('click', toggleSubMenu);
+    parentLinks[i].addEventListener('click', cachedToggleSubMenu);
   }
+}
+
+/**
+ * Opens a closed menu or closes an open one. Also makes sure to close all other submenus
+ * @param  {Event} e          the event that is bieng handled
+ * @param  {[NodeList]} links An optionally you can pass the list of all menus to avoid having to re-query for them. Defaults to querying for the list if it's not passed.
+ * @return {DOMNode}          The menu that was toggled
+ */
+function toggleSubMenu(e, links) {
+  if (!links) {
+    links = queryForMenuLinks();
+  }
+  // close any other open sub-nav
+  closeAllSubMenus(links, this);
+  // open this one if it's closed; close it if its open!
+  var parent = this.parentElement;
+  toggleClass(parent, 'open');
+  toggleClass(document.body, 'submenu-open', !parent.classList.contains('open'));
+  return parent;
+}
+/**
+ * removes the 'open' class from all passed elements' parentElements
+ * @param  {NodeList} links     the links whose parent should be closed
+ * @param  {[DOMNode]} skipLink Optionally pass a link to skip closing it (useful from the toggleSubMenu event handler)
+ * @return {NodeList}           The passed in links NodeList
+ */
+function closeAllSubMenus(links, skipLink) {
+  [].map.call(links, function(link){
+    if (link === skipLink) { return; }
+    link.parentElement.classList.remove('open');
+  });
+  var submenuIsOpen = skipLink && skipLink.parentElement.classList.contains('open');
+  toggleClass(document.body, 'submenu-open', !submenuIsOpen);
+  return links;
 }
 
 /**
@@ -122,6 +146,9 @@ onready(function(){
   // DOM Event handlers
   // Toggles a class `.menu_open` on the body. Used to drive the off-canvas menu on smaller screens
   function toggleOffCanvasMenu(e) {
+    // close any sub-menus
+    closeAllSubMenus(queryForMenuLinks());
+    // toggle the mobile menu
     toggleClass(body, 'menu_open');
   }
   hamburger.addEventListener('click', toggleOffCanvasMenu);
