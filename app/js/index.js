@@ -115,6 +115,7 @@ onready(function(){
   var i;
   var body = document.body;
   var hamburger = document.getElementById('hamburger');
+  var pageMask = document.getElementById('page_mask');
 
   // DOM Event handlers
   // Toggles a class `.menu_open` on the body. Used to drive the off-canvas menu on smaller screens
@@ -122,4 +123,5 @@ onready(function(){
     toggleClass(body, 'menu_open');
   }
   hamburger.addEventListener('click', toggleOffCanvasMenu);
+  pageMask.addEventListener('click', toggleOffCanvasMenu);
 });
