@@ -1,13 +1,15 @@
 @import "variables";
 @import "mixins";
+
 $header-heigth: 6rem;
+$menu-transition-duration: .3s;
+
 
 .header {
   background-color: $c-magenta;
   padding: $gridline $baseline;
   min-height: $header-heigth;
   &__nav {
-    background-color: green;
     width: 80%;
     position: absolute;
     top: 0;
@@ -35,10 +37,79 @@ $header-heigth: 6rem;
     $height: 2rem
   );
   .hide { display: none; }
+  &__wrap {
+    background-color: $c-magenta;
+    width: 100%;
+    height: $header-heigth;
+    padding: $gridline $baseline;
+  }
 }
 
 .nav {
   &__list {
     margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  &__item {
+    font-family: HUGEAvantGardeBold;
+    font-size: $baseline;
+    line-height: $baseline;
+  }
+  &__link{
+    text-decoration: none;
+    display: block;
+    padding: $baseline/2 $baseline;
+    color: black;
+    &:hover {
+      color: $c-magenta;
+      background-color: $c-light-gray;
+    }
+  }
+}
+.copyright {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 1.2rem;
+  line-height: 1.6rem;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 80%;
+  transform: translateX(-100%);
+}
+
+.page_screen {
+  position: fixed;
+  top: $header-heigth;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: $c-translucent-black;
+  opacity: 0;
+  pointer-events: none;
+  transition-property: opacity, transform;
+  transition-duration: $menu-transition-duration;
+}
+.header, .main, .copyright {
+  transition: transform $menu-transition-duration;
+}
+
+// the off canvas menu transition
+body.menu_open {
+  overflow: hidden;
+  .header, .main, .page_screen {
+    transform: translateX(80%);
+  }
+  .hamburger {
+    background-image: url("/images/toggle-close.svg")
+  }
+  .page_screen {
+    opacity: 1;
+    pointer-events: all;
+    z-index: 1;
+  }
+  .copyright {
+    transform: translateX(0);
   }
 }

@@ -393,7 +393,6 @@ body {
   padding: 2rem 2.4rem;
   min-height: 6rem; }
   .header__nav {
-    background-color: green;
     width: 80%;
     position: absolute;
     top: 0;
@@ -425,9 +424,69 @@ body {
   width: 5rem; }
   .huge_logo .hide {
     display: none; }
+  .huge_logo__wrap {
+    background-color: #ec008c;
+    width: 100%;
+    height: 6rem;
+    padding: 2rem 2.4rem; }
 
 .nav__list {
-  margin: 0; }
+  margin: 0;
+  padding: 0;
+  list-style: none; }
+
+.nav__item {
+  font-family: HUGEAvantGardeBold;
+  font-size: 2.4rem;
+  line-height: 2.4rem; }
+
+.nav__link {
+  text-decoration: none;
+  display: block;
+  padding: 1.2rem 2.4rem;
+  color: black; }
+  .nav__link:hover {
+    color: #ec008c;
+    background-color: #eee; }
+
+.copyright {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 1.2rem;
+  line-height: 1.6rem;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 80%;
+  transform: translateX(-100%); }
+
+.page_screen {
+  position: fixed;
+  top: 6rem;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  opacity: 0;
+  pointer-events: none;
+  transition-property: opacity, transform;
+  transition-duration: 0.3s; }
+
+.header, .main, .copyright {
+  transition: transform 0.3s; }
+
+body.menu_open {
+  overflow: hidden; }
+  body.menu_open .header, body.menu_open .main, body.menu_open .page_screen {
+    transform: translateX(80%); }
+  body.menu_open .hamburger {
+    background-image: url("/images/toggle-close.svg"); }
+  body.menu_open .page_screen {
+    opacity: 1;
+    pointer-events: all;
+    z-index: 1; }
+  body.menu_open .copyright {
+    transform: translateX(0); }
 
 .hero {
   height: 24rem;

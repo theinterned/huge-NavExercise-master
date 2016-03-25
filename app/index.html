@@ -5,28 +5,31 @@
   <script src="/js/index.js" charset="utf-8"></script>
   <link rel="stylesheet" href="/css/index.css">
 </head>
-<body>
+<body class="menu_open">
+  <div class="page_screen" ></div>
   <header class="header" role="banner">
     <a class="hamburger" id="hamburger">Menu</a>
     <nav class="header__nav" role="navigation" id="main_nav">
-      <h1 class="huge_logo" id="huge_logo"><span class="hide">HUGE</span></h1>
+      <div class="huge_logo__wrap">
+        <h1 class="huge_logo" id="huge_logo"><span class="hide">HUGE</span></h1>
+      </div>
       <ul class="nav__list">
         <li class="nav__item">
-          <a class="nav__link" href="{url}"><span class="nav__label">{label}</span></a>
+          <a class="nav__link" href="{url}"><span class="nav__label">label</span></a>
         </li>
         <li class="nav__item">
-          <a class="nav__link" href="{url}"><span class="nav__label">{label}</span></a>
+          <a class="nav__link" href="{url}"><span class="nav__label">label</span></a>
           <ul class="nav__list--secondary">
             <li class="nav__item--secondary">
-              <a class="nav__link" href="{url}"><span class="nav__label">{label}</span></a>
+              <a class="nav__link" href="{url}"><span class="nav__label">label</span></a>
             </li>
             <li class="nav__item--secondary">
-              <a class="nav__link" href="{url}"><span class="nav__label">{label}</span></a>
+              <a class="nav__link" href="{url}"><span class="nav__label">label</span></a>
             </li>
           </ul>
         </li>
         <li class="nav__item">
-          <a class="nav__link" href="{url}"><span class="nav__label">{label}</span></a>
+          <a class="nav__link" href="{url}"><span class="nav__label">label</span></a>
         </li>
       </ul>
     </nav>
@@ -40,5 +43,6 @@
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
     </article>
   </main>
+  <footer class="copyright">&copy; 2014 Huge. All Rights Reserved.</footer>
 </body>
 </html>
