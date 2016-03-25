@@ -137,10 +137,13 @@ $page-peak-width: calc(100% - 7.2rem);
       height: auto;
       overflow: visible;
       padding: 0;
+      white-space: nowrap;
     }
     &__item {
-      float: left;
+      // float: left;
+      display: inline-block;
       width: auto;
+      margin-right: -.4rem;
     }
     &__item > &__link {
       &, &--parent {
