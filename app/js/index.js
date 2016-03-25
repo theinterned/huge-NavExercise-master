@@ -90,7 +90,7 @@ function toggleSubMenu(e, links) {
   // open this one if it's closed; close it if its open!
   var parent = this.parentElement;
   toggleClass(parent, 'open');
-  toggleClass(document.body, 'submenu-open', !parent.classList.contains('open'));
+  toggleClass(document.body, 'submenu-open', parent.classList.contains('open'));
   return parent;
 }
 /**
@@ -105,7 +105,7 @@ function closeAllSubMenus(links, skipLink) {
     link.parentElement.classList.remove('open');
   });
   var submenuIsOpen = skipLink && skipLink.parentElement.classList.contains('open');
-  toggleClass(document.body, 'submenu-open', !submenuIsOpen);
+  toggleClass(document.body, 'submenu-open', submenuIsOpen);
   return links;
 }
 
@@ -117,9 +117,9 @@ function closeAllSubMenus(links, skipLink) {
  */
 function toggleClass(el, className, test) {
   if (typeof test === 'undefined') {
-    test =  el.classList.contains(className);
+    test =  !el.classList.contains(className);
   }
-  var method = (test) ? 'remove' : 'add';
+  var method = (test) ? 'add' : 'remove';
   el.classList[method](className);
   return el;
 }
