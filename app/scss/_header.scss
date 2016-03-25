@@ -39,7 +39,7 @@ $menu-transition-duration: .3s;
   .hide { display: none; }
   &__wrap {
     background-color: $c-magenta;
-    width: 100%;
+    width: 101%; // 1% extra to cover the seam between the logo-wrap and the header
     height: $header-heigth;
     padding: $gridline $baseline;
   }
@@ -69,6 +69,9 @@ $menu-transition-duration: .3s;
       > .nav__list--secondary {
         max-height: 999px;
       }
+      > .nav__link--parent::after {
+        transform: translateY(-50%) rotate(180deg);
+      }
     }
   }
   &__link {
@@ -80,6 +83,21 @@ $menu-transition-duration: .3s;
       &:hover {
         color: $c-magenta;
         background-color: $c-light-gray;
+      }
+    }
+    &--parent {
+      position: relative;
+      &::after {
+        content: ' ';
+        width: 2*$baseline;
+        height: $gridline;
+        display: block;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: url("/images/chevron.png") 50%/auto no-repeat;
+        right: 0;
+        transition: transform $menu-transition-duration;
       }
     }
   }
