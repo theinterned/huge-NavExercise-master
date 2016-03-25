@@ -29,9 +29,25 @@ function get(options) {
   return request.send();
 }
 
+// Ajax success handler
 function onSuccess(request) {
   var response = JSON.parse(request.response);
   console.info('SUCCESS', response, request);
+}
+
+/**
+ * toggle a class on an element based on the test argument
+ * @param {DOMNode} el  the element to work with
+ * @param {String} className  the class to toggle
+ * @param {Boolean} [test]  if true the class will be added if false it will be removed. Defaults to testing for presence of `className` on `el`
+ */
+function toggleClass(el, className, test) {
+  if (typeof test === 'undefined') {
+    test =  el.classList.contains(className);
+  }
+  var method = (test) ? 'remove' : 'add';
+  el.classList[method](className);
+  return el;
 }
 
 // Away we go!
@@ -43,8 +59,18 @@ function onready(fn) {
   }
 }
 onready(function(){
+  // populate the nav
   get({
     url: navURL,
     success: onSuccess
   });
+  // add event listeners
+  var hamburger = document.getElementById('hamburger');
+  var body = document.body;
+
+  // DOM Event handlers
+  function handleHamburgerClick(e) {
+    toggleClass(body, 'menu_open');
+  }
+  hamburger.addEventListener('click', handleHamburgerClick);
 });
