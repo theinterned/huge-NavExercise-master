@@ -47,14 +47,19 @@ $menu-transition-duration: .3s;
 
 .nav {
   &__list {
-    margin: 0;
-    padding: 0;
-    list-style: none;
+    &, &--secondary {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
   }
   &__item {
     font-family: HUGEAvantGardeBold;
-    font-size: $baseline;
-    line-height: $baseline;
+    font-size: 2.1rem;
+    &--secondary {
+      font-family: Galaxie;
+      font-size: 1.6rem;
+    }
   }
   &__link{
     text-decoration: none;
