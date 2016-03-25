@@ -69,8 +69,9 @@ onready(function(){
   var body = document.body;
 
   // DOM Event handlers
-  function handleHamburgerClick(e) {
+  // Toggles a class `.menu_open` on the body. Used to drive the off-canvas menu on smaller screens
+  function toggleMenuOpenState(e) {
     toggleClass(body, 'menu_open');
   }
-  hamburger.addEventListener('click', handleHamburgerClick);
+  hamburger.addEventListener('click', toggleMenuOpenState);
 });
