@@ -82,6 +82,7 @@ function buildNav(items) {
  * @return {DOMNode}          The menu that was toggled
  */
 function toggleSubMenu(e, links) {
+  e.preventDefault();
   if (!links) {
     links = queryForMenuLinks();
   }
