@@ -13,6 +13,7 @@ $menu-transition-duration: .15s;
     width: 80%;
     position: absolute;
     top: 0;
+    bottom: 0;
     left: 0;
     transform: translateX(-100%);
   }
@@ -29,6 +30,7 @@ $menu-transition-duration: .15s;
   left: 0;
   cursor: pointer;
 }
+
 .huge_logo {
   margin: 0;
   @include replace-text(
@@ -47,6 +49,8 @@ $menu-transition-duration: .15s;
 
 .nav {
   &__list {
+    height: calc(100% - #{$header-heigth});
+    overflow: auto;
     &, &--secondary {
       margin: 0;
       padding: 0;
@@ -126,7 +130,7 @@ $menu-transition-duration: .15s;
   transition-property: opacity, transform;
   transition-duration: $menu-transition-duration;
 }
-.header, .main, .copyright {
+.header, .main, .copyright, .header__nav {
   transition: transform $menu-transition-duration;
 }
 
@@ -144,6 +148,7 @@ body.menu_open {
     pointer-events: all;
     z-index: 1;
   }
+  .header__nav,
   .copyright {
     transform: translateX(0);
   }
