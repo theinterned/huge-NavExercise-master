@@ -2,6 +2,8 @@ var gulp = require("gulp");
 var sass = require("gulp-sass");
 var browserSync = require('browser-sync').create();
 var nodemon = require('gulp-nodemon');
+var mocha = require('gulp-mocha');
+var util = require('gulp-util');
 
 var source = "app/";
 var dest = "build/";
@@ -10,6 +12,7 @@ var sassFiles = sassDir+"*.scss";
 var jsDir = source+"js/**/";
 var jsFiles = jsDir+"*.js";
 var htmlFiles = source+"*.html";
+var testDir = "test/**/*.js"
 
 gulp.task('sass', function(){
   console.log('Processing css');
@@ -49,4 +52,15 @@ gulp.task('watch', ['sass', 'browserSync'], function(){
   gulp.watch(sassFiles, ['sass']);
   gulp.watch(jsFiles, browserSync.reload);
   gulp.watch(htmlFiles, browserSync.reload);
+});
+
+gulp.task('test', function () {
+  util.log('###################################');
+  return gulp.src([testDir], { read: false })
+    .pipe(mocha({ reporter: 'spec' }))
+    .on('error', util.log);
+});
+
+gulp.task('test:watch', function () {
+    gulp.watch([source+"**/*", testDir, 'app.js'], ['test']);
 });
