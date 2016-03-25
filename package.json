@@ -14,8 +14,8 @@
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./bin/www",
-    "dev": "gulp watch"
+    "dev": "gulp watch",
+    "start": "npm run dev"
   },
   "dependencies": {
     "express": "~4.2.0",
