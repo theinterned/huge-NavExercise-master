@@ -1,7 +1,40 @@
 // app config
 var navURL = '/api/nav.json'
 
-// Ajax request
+/***********************
+ *
+ * HELPER FUNCTIONS and UTILITIES
+ *
+ ***********************/
+// helper functions to find some DOM nodes
+function queryForMenuLinks(){ return document.getElementsByClassName('nav__link'); }
+function queryForSubMenuLinks(){ return document.getElementsByClassName('nav__link--parent'); }
+function queryForMainNav(){ return document.getElementById('main_nav'); }
+function queryForHamburger(){ return document.getElementById('hamburger'); }
+function queryForPageMask(){ return document.getElementById('page_mask'); }
+
+/**
+ * toggle a class on an element based on the test argument
+ * @param {DOMNode} el  the element to work with
+ * @param {String} className  the class to toggle
+ * @param {Boolean} [test]  if true the class will be added if false it will be removed. Defaults to testing for presence of `className` on `el`
+ */
+function toggleClass(el, className, test) {
+  if (typeof test === 'undefined') {
+    test =  !el.classList.contains(className);
+  }
+  var method = (test) ? 'add' : 'remove';
+  el.classList[method](className);
+  return el;
+}
+/**
+ * Make Ajax requests! Pass `success` and `error` callbacks to do stuff with the returned data!
+ * @param  {[String='GET']} options.method        What HHTP verb to use: GET, POST, PUT ... NOTE! I've only built and tested this with GET
+ * @param  {[String='/']} options.url             The url to make the request to
+ * @param  {[function(request)]} options.success  Callback invoked on successful response from the server. Passed the XMLHttpRequest object which contains the response as well as other info (see docs: https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest)
+ * @param  {[function(request)]} options.error    Callback invoked on error response from the server. Passed the XMLHttpRequest object which contains the response as well as other info (see docs: https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest)
+ * @return {XMLHttpRequest}                       The XMLHttpRequest object that is handling the request
+ */
 function get(options) {
   var options = options || {};
   var defaults = {
@@ -29,50 +62,74 @@ function get(options) {
   return request.send();
 }
 
-// Ajax success handler
+/**
+ * Ajax success handler - This kicks off the rendering of the menu in response to
+ * a successful response from the api server.
+ * @param  {XMLHttpRequest} request  the server request containing the server response.
+ */
 function onSuccess(request) {
   var response = JSON.parse(request.response);
-  buildNav(response.items);
+  renderNav(response.items);
 }
 
-function createNavItem(item, secondary) {
+/***********************
+ *
+ * RENDERING and TEMPLATE FUNCTIONS
+ *
+ ***********************/
+
+/**
+ * Template function that takes a nav item returns a string representation of it's menu html
+ * @param  {Object} item          The nav item to render
+ * @param  {[Boolean]} secondary  If this is true the item will be rendered as a second-level nav item: basically it will have difernt classes
+ * @return {String}               The markup representing the nav item
+ */
+function renderNavItem(item, secondary) {
   var itemLink, itemEl;
   var itemSubList = "";
   var itemClass = `nav__item${secondary ? "--secondary" : ""}`;
   var itemLinkClass = "nav__link"
   if (item.items && item.items.length) {
     itemLinkClass = "nav__link--parent"
-    itemSubList = createNavList(item.items, true);
+    itemSubList = renderNavList(item.items, true);
   }
   itemLink = `<a class="${itemLinkClass}" href="${item.url}"><span class="nav__label">${item.label}</span></a>`
   itemEl = `<li class="${itemClass}">${itemLink} ${itemSubList}</li>`
   return itemEl;
 }
-function createNavList(items, secondary) {
-  var i;
+/**
+ * Template function that takes a list of nav items and returns a string representation of a menu's html
+ * @param  {Array} items          Array of objects representing a nav item
+ * @param  {[Boolean]} secondary  If this is true the item will be rendered as a second-level nav item: basically it will have difernt classes
+ * @return {String}               The markup representing the nav item
+ */
+function renderNavList(items, secondary) {
   var className = `nav__list${secondary ? "--secondary" : ""}`;
   var listStart = `<ul class="${className}">`;
-  var itemList = items.map(function(item){return createNavItem(item, secondary)})
+  var itemList = items.map(function(item){return renderNavItem(item, secondary)})
   var listEnd = `</ul>`;
-  listEl = listStart + itemList.join('\n') + listEnd;
+  var listEl = listStart + itemList.join('\n') + listEnd;
   return listEl;
 }
-function queryForMenuLinks(){ return document.getElementsByClassName('nav__link'); }
-function queryForSubMenuLinks(){ return document.getElementsByClassName('nav__link--parent'); }
-var hugeLogoEl; // we're gong to cahce the innerHTML of the main nav once so we canre-aply it ove rand over
-function buildNav(items) {
-  var mainNav = document.getElementById('main_nav');
-  hugeLogoEl = hugeLogoEl || mainNav.innerHTML;
-  var list = createNavList(items);
+
+/**
+ * Render function that builds the Nav and attaches event handlers
+ * @param  {Array} items  Array of objects representing a nav item
+ */
+var hugeLogoEl; // we're going to cache the innerHTML of the main nav once so we canre-aply it ove rand over
+function renderNav(items) {
+  var mainNav = queryForMainNav();
+  hugeLogoEl = hugeLogoEl || mainNav.innerHTML; // this gets set once and then won't be over-written with the built innerHTML
+  var list = renderNavList(items);
   mainNav.innerHTML = hugeLogoEl + list;
   // now that we've built the list ...
-  // 1. cache the list of parent links
+  // 1. cache the lists of links
   var parentLinks = queryForSubMenuLinks();
   var menuLinks = queryForMenuLinks();
-  // 2. use that cached list inside the scope of this callback event handler
+  // 2. use that cached lists inside the scope of these callback event handlers
   function cachedToggleSubMenu(e) { return toggleSubMenu.call(this, e, parentLinks); }
   function cachedNavigationLinkClicked(e){ navigationLinkClicked.call(this, parentLinks); }
-  // 3. attach the event handler to the lis of links
+  // 3. attach the event handlers to the list of links
   for (i = 0; i < parentLinks.length; i++) {
     parentLinks[i].addEventListener('click', cachedToggleSubMenu);
   }
@@ -81,6 +138,22 @@ function buildNav(items) {
   }
 }
 
+/***********************
+ *
+ * EVENT HANDLERS
+ *
+ ***********************/
+
+/**
+ * handls clicking a link that is not a parent of a sub-menu: in other words a
+ * link that navigates somewhere else.
+ *
+ * Does 2 things:
+ * 1. Close any open submenus
+ * 2. Closes the off-canvas menu (if it's open)
+ * @param  {Event} e            the event that is bieng handled
+ * @param  {[NodeList]} links   An optionally you can pass the list of all menus to avoid having to re-query for them. Defaults to querying for the list if it's not passed.
+ */
 function navigationLinkClicked(e, links){
   if (!links) {
     links = queryForSubMenuLinks();
@@ -126,21 +199,9 @@ function closeAllSubMenus(links, skipLink) {
 }
 
 /**
- * toggle a class on an element based on the test argument
- * @param {DOMNode} el  the element to work with
- * @param {String} className  the class to toggle
- * @param {Boolean} [test]  if true the class will be added if false it will be removed. Defaults to testing for presence of `className` on `el`
+ * Toggles a class `.menu_open` on the body. Used to drive the off-canvas menu on smaller screens
+ * @param  {Event} e          the event that is bieng handled
  */
-function toggleClass(el, className, test) {
-  if (typeof test === 'undefined') {
-    test =  !el.classList.contains(className);
-  }
-  var method = (test) ? 'add' : 'remove';
-  el.classList[method](className);
-  return el;
-}
-
-// Toggles a class `.menu_open` on the body. Used to drive the off-canvas menu on smaller screens
 function toggleOffCanvasMenu(e) {
   // close any sub-menus
   closeAllSubMenus(queryForSubMenuLinks());
@@ -148,7 +209,12 @@ function toggleOffCanvasMenu(e) {
   toggleClass(document.body, 'menu_open');
 }
 
-// Away we go!
+/***********************
+ *
+ * AWAY WE GO!
+ * Below is the code to actually run the whole thing
+ *
+ ***********************/
 function onready(fn) {
   if (document.readyState != 'loading'){
     fn();
@@ -157,14 +223,14 @@ function onready(fn) {
   }
 }
 onready(function(){
-  // populate the nav
+  var hamburger = queryForHamburger();
+  var pageMask = queryForPageMask();
+  // 1. Render the nav with the data from our Ajax request
   get({
     url: navURL,
     success: onSuccess
   });
-  var hamburger = document.getElementById('hamburger');
-  var pageMask = document.getElementById('page_mask');
-  // DOM Event handlers
+  // 2. Add some DOM Event handlers
   hamburger.addEventListener('click', toggleOffCanvasMenu);
   pageMask.addEventListener('click', toggleOffCanvasMenu);
 });
