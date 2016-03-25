@@ -6,16 +6,30 @@
   margin: 0;
   background: black url("/images/background-image.jpg") 50%/cover no-repeat;
   background-size: cover;
+  @media #{$mq-desktop} {
+    height: 64rem;
+    position: relative;
+  }
   img { display: none; }
 }
 
 .content {
   padding: 5rem $baseline;
-  :first-child { margin-top: 0; }
   &__h1 {
     font-size: 4.4rem;
     line-height: 4.8rem;
     font-family: HUGEAvantGardeBold;
+    margin-top: 0;
     margin-bottom: 3.8rem; //this cuts out some room for the descenders on the "g"s so the space above and below the header feels more even
+    @media #{$mq-desktop} {
+      color: white;
+      max-width: 79.2rem; // exactly the right width for "Get paid for giving a shit." to break nicely on 2 lines
+      font-size: 12rem;
+      line-height: 13.2rem;
+      margin: 0 auto;
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
+    }
   }
 }

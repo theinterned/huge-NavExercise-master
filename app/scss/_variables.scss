@@ -4,3 +4,8 @@ $c-translucent-black: rgba(0, 0, 0, 0.5);
 
 $baseline: 2.4rem; // vertical rhythm
 $gridline: 2rem;   // horizontal rhythm
+
+$max-width: 96.8rem;
+
+$bp-desktop: 600px; //768px;
+$mq-desktop: "screen and (min-width: #{$bp-desktop})";
