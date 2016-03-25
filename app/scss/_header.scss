@@ -24,6 +24,9 @@ $page-peak-width: calc(100% - 7.2rem);
     @media #{$mq-desktop} {
       width: 100%;
       transform: translateX(0);
+      body.submenu-open & {
+        z-index: 1;
+      }
     }
   }
 }
@@ -64,6 +67,7 @@ $page-peak-width: calc(100% - 7.2rem);
       width: auto;
       height: auto;
       padding: $baseline;
+      padding-right: 2*$baseline;
       float: left;
     }
   }
@@ -127,6 +131,36 @@ $page-peak-width: calc(100% - 7.2rem);
       }
     }
   }
+  @media #{$mq-desktop} {
+    &__list {
+      height: auto;
+      overflow: visible;
+    }
+    &__item {
+      float: left;
+      width: auto;
+    }
+    &__item > &__link {
+      &, &--parent {
+        padding: $baseline;
+        color: white;
+        position: relative;
+        &::after { display: none; }
+        &:hover {
+          background-color: white;
+          color: $c-magenta;
+        }
+      }
+    }
+    &__item.open > &__link--parent {
+      background-color: white;
+      color: $c-magenta
+    }
+    &__list--secondary {
+      position: absolute;
+      background-color: white;
+    }
+  }
 }
 .copyright {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -151,6 +185,14 @@ $page-peak-width: calc(100% - 7.2rem);
   pointer-events: none;
   transition-property: opacity, transform;
   transition-duration: $menu-transition-duration;
+  @media #{$mq-desktop} {
+    top: $header-heigth-desktop;
+    body.submenu-open & {
+      opacity: 1;
+      pointer-events: all;
+      z-index: 1;
+    }
+  }
 }
 .header, .main, .copyright, .header__nav {
   transition: transform $menu-transition-duration;

@@ -75,7 +75,9 @@ function buildNav(items) {
       link.parentElement.classList.remove('open');
     });
     // open this one if it's closed; close it if its open!
-    toggleClass(this.parentElement, 'open');
+    var parent = this.parentElement;
+    toggleClass(parent, 'open');
+    toggleClass(document.body, 'submenu-open', !parent.classList.contains('open'));
   }
   // 3. attach the event handler to the lis of links
   for (i = 0; i < parentLinks.length; i++) {
