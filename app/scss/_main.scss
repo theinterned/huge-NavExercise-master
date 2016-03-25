@@ -1,6 +1,8 @@
 @import "variables";
 @import "mixins";
-
+.main {
+  position: relative;
+}
 .hero {
   height: $baseline * 10; // 240px
   margin: 0;
@@ -8,13 +10,22 @@
   background-size: cover;
   @media #{$mq-desktop} {
     height: 64rem;
-    position: relative;
   }
   img { display: none; }
 }
 
 .content {
   padding: 5rem $baseline;
+  max-width: $max-width;
+  margin: 0 auto;
+  @media #{$mq-desktop} {
+    padding: 6rem $baseline;
+    font-size: $baseline;
+    line-height: 3.6rem;
+  }
+  p {
+    margin: 0 0 $baseline;
+  }
   &__h1 {
     font-size: 4.4rem;
     line-height: 4.8rem;
@@ -23,13 +34,23 @@
     margin-bottom: 3.8rem; //this cuts out some room for the descenders on the "g"s so the space above and below the header feels more even
     @media #{$mq-desktop} {
       color: white;
-      max-width: 79.2rem; // exactly the right width for "Get paid for giving a shit." to break nicely on 2 lines
       font-size: 12rem;
       line-height: 13.2rem;
-      margin: 0 auto;
-      position: relative;
-      top: 50%;
-      transform: translateY(-50%);
+      height: 64rem;
+      position: absolute;
+      margin: 0;
+      top: 0;
+      left: 0;
+      width: 100%;
+      .wrap {
+        display: block;
+        max-width: 79.2rem +  2*$baseline; // exactly the right width for "Get paid for giving a shit." to break nicely on 2 lines
+        padding: 0 $baseline;
+        margin: 0 auto;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+      }
     }
   }
 }
