@@ -32,12 +32,10 @@ function get(options) {
 // Ajax success handler
 function onSuccess(request) {
   var response = JSON.parse(request.response);
-  console.info('SUCCESS', response, request);
   buildNav(response.items);
 }
 
 function createNavItem(item, secondary) {
-  console.log('createNavItem', secondary);
   var itemLink, itemEl;
   var itemSubList = "";
   var itemClass = `nav__item${secondary ? "--secondary" : ""}`;
@@ -51,7 +49,6 @@ function createNavItem(item, secondary) {
   return itemEl;
 }
 function createNavList(items, secondary) {
-  console.log('createNavList', secondary);
   var i;
   var className = `nav__list${secondary ? "--secondary" : ""}`;
   var listStart = `<ul class="${className}">`;
