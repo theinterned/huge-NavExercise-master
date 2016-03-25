@@ -57,7 +57,8 @@ function createNavList(items, secondary) {
   listEl = listStart + itemList.join('\n') + listEnd;
   return listEl;
 }
-function queryForMenuLinks(){ return document.getElementsByClassName('nav__link--parent'); }
+function queryForMenuLinks(){ return document.getElementsByClassName('nav__link'); }
+function queryForSubMenuLinks(){ return document.getElementsByClassName('nav__link--parent'); }
 var hugeLogoEl; // we're gong to cahce the innerHTML of the main nav once so we canre-aply it ove rand over
 function buildNav(items) {
   var mainNav = document.getElementById('main_nav');
@@ -66,13 +67,26 @@ function buildNav(items) {
   mainNav.innerHTML = hugeLogoEl + list;
   // now that we've built the list ...
   // 1. cache the list of parent links
-  var parentLinks = queryForMenuLinks();
+  var parentLinks = queryForSubMenuLinks();
+  var menuLinks = queryForMenuLinks();
   // 2. use that cached list inside the scope of this callback event handler
-  function cachedToggleSubMenu(e) { toggleSubMenu.call(this, e, parentLinks); }
+  function cachedToggleSubMenu(e) { return toggleSubMenu.call(this, e, parentLinks); }
+  function cachedNavigationLinkClicked(e){ navigationLinkClicked.call(this, parentLinks); }
   // 3. attach the event handler to the lis of links
   for (i = 0; i < parentLinks.length; i++) {
     parentLinks[i].addEventListener('click', cachedToggleSubMenu);
   }
+  for (i = 0; i < menuLinks.length; i++) {
+    menuLinks[i].addEventListener('click', cachedNavigationLinkClicked);
+  }
+}
+
+function navigationLinkClicked(e, links){
+  if (!links) {
+    links = queryForSubMenuLinks();
+  }
+  closeAllSubMenus(links, this);
+  document.body.classList.remove('menu_open');
 }
 
 /**
@@ -84,7 +98,7 @@ function buildNav(items) {
 function toggleSubMenu(e, links) {
   e.preventDefault();
   if (!links) {
-    links = queryForMenuLinks();
+    links = queryForSubMenuLinks();
   }
   // close any other open sub-nav
   closeAllSubMenus(links, this);
@@ -105,7 +119,8 @@ function closeAllSubMenus(links, skipLink) {
     if (link === skipLink) { return; }
     link.parentElement.classList.remove('open');
   });
-  var submenuIsOpen = skipLink && skipLink.parentElement.classList.contains('open');
+  var submenuIsOpen = !!(skipLink && skipLink.parentElement.classList.contains('open'));
+  console.log(submenuIsOpen);
   toggleClass(document.body, 'submenu-open', submenuIsOpen);
   return links;
 }
@@ -125,6 +140,14 @@ function toggleClass(el, className, test) {
   return el;
 }
 
+// Toggles a class `.menu_open` on the body. Used to drive the off-canvas menu on smaller screens
+function toggleOffCanvasMenu(e) {
+  // close any sub-menus
+  closeAllSubMenus(queryForSubMenuLinks());
+  // toggle the mobile menu
+  toggleClass(document.body, 'menu_open');
+}
+
 // Away we go!
 function onready(fn) {
   if (document.readyState != 'loading'){
@@ -139,19 +162,9 @@ onready(function(){
     url: navURL,
     success: onSuccess
   });
-  var i;
-  var body = document.body;
   var hamburger = document.getElementById('hamburger');
   var pageMask = document.getElementById('page_mask');
-
   // DOM Event handlers
-  // Toggles a class `.menu_open` on the body. Used to drive the off-canvas menu on smaller screens
-  function toggleOffCanvasMenu(e) {
-    // close any sub-menus
-    closeAllSubMenus(queryForMenuLinks());
-    // toggle the mobile menu
-    toggleClass(body, 'menu_open');
-  }
   hamburger.addEventListener('click', toggleOffCanvasMenu);
   pageMask.addEventListener('click', toggleOffCanvasMenu);
 });
