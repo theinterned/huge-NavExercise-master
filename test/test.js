@@ -177,5 +177,20 @@
         });
       });
     });
+    describe('Template methods', function(){
+      describe('renderNavItem', function(){
+        it('should render a nav item', function(){
+          var item = {
+            url: "URL",
+            label: "LABEL"
+          }
+          var hn = new HugeNav();
+          expect(hn).to.respondTo('renderNavItem');
+          var result = hn.renderNavItem(item);
+          expect(result).to.be.a('string');
+          expect(result).to.eql('<li class="nav__item"><a class="nav__link" href="URL"><span class="nav__label">LABEL</span></a> </li>');
+        });
+      });
+    });
   });
 })(window);
