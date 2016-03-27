@@ -190,6 +190,17 @@
           expect(result).to.be.a('string');
           expect(result).to.eql('<li class="nav__item"><a class="nav__link" href="URL"><span class="nav__label">LABEL</span></a> </li>');
         });
+        it('should render the secondary nav item', function(){
+          var item = {
+            url: "URL",
+            label: "LABEL"
+          }
+          var hn = new HugeNav();
+          expect(hn).to.respondTo('renderNavItem');
+          var result = hn.renderNavItem(item, true);
+          expect(result).to.be.a('string');
+          expect(result).to.eql('<li class="nav__item--secondary"><a class="nav__link" href="URL"><span class="nav__label">LABEL</span></a> </li>');
+        });
       });
     });
   });
