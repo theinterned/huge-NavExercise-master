@@ -13,7 +13,7 @@
      *
      ***********************/
     // helper functions to find some DOM nodes
-    p.queryForMenuLinks = function(){ return document.getElementsByClassName('nav__link'); };
+    p.queryForMainNavLinks = function(){ return document.getElementsByClassName('nav__link'); };
     p.queryForMenuLinks = function(){ return document.getElementsByClassName('nav__link--parent'); };
     p.queryForMainNav = function(){ return document.getElementById('main_nav'); };
     p.queryForHamburger = function(){ return document.getElementById('hamburger'); };

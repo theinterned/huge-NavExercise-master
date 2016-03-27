@@ -7,14 +7,24 @@
   //
   /////////////////////////
   function mockMenu() {
-    html = ['<ul class="nav__list">',
+    html = [
+      '<nav class="header__nav" role="navigation" id="main_nav">',
+      '<a class="huge_logo" href="/">',
+      '<h1 class="huge_logo__type" id="huge_logo"><span class="hide">HUGE</span></h1>',
+      '</a>'
+      '<nav class="main_nav" id="main_nav" role="nav">',
+      '<ul class="nav__list">',
       '<li class="nav__item">',
       '<a class="nav__link" href="#first_link">A link</a>',
       '</li>',
       '<li class="nav__item">',
       '<a class="nav__link" href="#second_link">A second link</a>',
       '</li>',
-      '</ul>'
+      '<li class="nav__item ">',
+      '<a class="nav__link--parent" href="#second_link">A second link</a>',
+      '</li>',
+      '</ul>',
+      '</nav>'
     ];
     return html.join('');
   }
@@ -32,8 +42,7 @@
   describe('test the tests', function(){
     describe('mockMenu', function(){
       it('should return the menu dom as a string', function(){
-        var expected = '<ul class="nav__list"><li class="nav__item"><a class="nav__link" href="#first_link">A link</a></li><li class="nav__item"><a class="nav__link" href="#second_link">A second link</a></li></ul>';
-        expect(mockMenu()).to.equal(expected);
+        expect(mockMenu()).to.be.a("string");
       });
     });
     describe('mockHTMLString', function(){
@@ -64,6 +73,9 @@
         var list = result.getElementsByClassName('nav__list');
         var firstChild = result.children[0];
         expect(list[0]).to.equal(firstChild);
+        expect(document.getElementsByClassName('nav__item').length).to.equal(3);
+        expect(document.getElementsByClassName('nav__link').length).to.equal(2);
+        expect(document.getElementsByClassName('nav__link--parent').length).to.equal(1);
       });
     });
   }); // 'tests the tests' end
@@ -75,11 +87,24 @@
     });
   });
 
+  describe('queryForMainNavLinks', function(){
+    it('should return all the menu links', function(){
+      var hn = new HugeNav();
+      var result = mockDOM();
+      var links = hn.queryForMainNavLinks();
+      expect(links).to.be.an('NodeList');
+      expect(document.getElementsByClassName('nav__link').length).to.equal(2);
+      expect(links.length).to.equal(2);
+    });
+  });
   describe('queryForMenuLinks', function(){
     it('should return all the menu links', function(){
-      var hn = HugeNav();
-      var dom = mockDOM();
-      var links = HugeNav.queryForMenuLinks();
+      var hn = new HugeNav();
+      var result = mockDOM();
+      var links = hn.queryForMenuLinks();
+      expect(links).to.be.a('NodeList');
+      expect(document.getElementsByClassName('nav__link--parent').length).to.equal(1);
+      expect(links.length).to.equal(1);
     });
   });
 
