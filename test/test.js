@@ -129,21 +129,21 @@
     });
 
     describe('DOM Query methods', function(){
-      describe('queryForMainNavLinks', function(){
+      describe('queryForMenuLinks', function(){
         it('should return all the .nav__link elements', function(){
           var hn = new HugeNav();
           var result = mockDOM();
-          var links = hn.queryForMainNavLinks();
+          var links = hn.queryForMenuLinks();
           expect(links).to.be.an('NodeList');
           expect(document.getElementsByClassName('nav__link').length).to.equal(2);
           expect(links.length).to.equal(2);
         });
       });
-      describe('queryForMenuLinks', function(){
+      describe('queryForSubMenuLinks', function(){
         it('should return all the .nav__link--parent menu links', function(){
           var hn = new HugeNav();
           var result = mockDOM();
-          var links = hn.queryForMenuLinks();
+          var links = hn.queryForSubMenuLinks();
           expect(links).to.be.a('NodeList');
           expect(document.getElementsByClassName('nav__link--parent').length).to.equal(1);
           expect(links.length).to.equal(1);
@@ -200,6 +200,40 @@
           var result = hn.renderNavItem(item, true);
           expect(result).to.be.a('string');
           expect(result).to.eql('<li class="nav__item--secondary"><a class="nav__link" href="URL"><span class="nav__label">LABEL</span></a> </li>');
+        });
+      });
+      describe('renderNavList', function(){
+        it('should render a nav list', function(){
+          var items = [{
+            url: "URL",
+            label: "LABEL"
+          }];
+          var hn = new HugeNav();
+          expect(hn).to.respondTo('renderNavList');
+          var result = hn.renderNavList(items);
+          expect(result).to.be.a('string');
+          expect(result).to.eql('<ul class="nav__list"><li class="nav__item"><a class="nav__link" href="URL"><span class="nav__label">LABEL</span></a> </li></ul>');
+        });
+        it('should render a secondary nav list', function(){
+          var items = [{
+            url: "URL",
+            label: "LABEL"
+          }];
+          var hn = new HugeNav();
+          expect(hn).to.respondTo('renderNavList');
+          var result = hn.renderNavList(items, true);
+          expect(result).to.be.a('string');
+          expect(result).to.eql('<ul class="nav__list--secondary"><li class="nav__item--secondary"><a class="nav__link" href="URL"><span class="nav__label">LABEL</span></a> </li></ul>');
+        });
+      });
+      describe('render', function(){
+        it('should have a main render method', function(){
+          var hn = new HugeNav();
+          expect(hn).to.respondTo('render');
+        });
+        it('should render to the #main_nav', function(){
+          var hn = new HugeNav();
+          hn.render([]);
         });
       });
     });

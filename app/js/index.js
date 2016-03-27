@@ -60,7 +60,13 @@
           success: function(request){ console.info(request.responseText, request); },
           error: function(request){ console.error(request.responseText, request); }
         }
-        var args = Object.assign({}, defaults, options);
+        var args = {
+          method: options.method || defaults.method,
+          url: options.url || defaults.url,
+          success: options.success || defaults.success,
+          error: options.error || defaults.error
+        }
+
         var request = new XMLHttpRequest();
         request.open(args.method, args.url, true);
         request.onload = function() {
@@ -85,7 +91,9 @@
   	var C = function(){ return constructor.apply(this, arguments); }
   	var p = C.prototype;
     //construct
-  	function constructor(options){};
+  	function constructor(options){
+      this.fetch();
+    };
     p.navURL = '/api/nav.json';
 
     /***********************
@@ -94,12 +102,20 @@
      *
      ***********************/
     // helper functions to find some DOM nodes
-    p.queryForMainNavLinks = function(){ return document.getElementsByClassName('nav__link'); };
-    p.queryForMenuLinks = function(){ return document.getElementsByClassName('nav__link--parent'); };
+    p.queryForMenuLinks = function(){ return document.getElementsByClassName('nav__link'); };
+    p.queryForSubMenuLinks = function(){ return document.getElementsByClassName('nav__link--parent'); };
     p.queryForMainNav = function(){ return document.getElementById('main_nav'); };
     p.queryForHamburger = function(){ return document.getElementById('hamburger'); };
     p.queryForPageMask = function(){ return document.getElementById('page_mask'); };
 
+    p.fetch = function(){
+      var _this = this;
+      var success = function(){ _this.onSuccess.apply(_this, arguments); }
+      hh.ajax({
+        url: this.navURL,
+        success: success
+      });
+    }
     /**
      * Ajax success handler - This kicks off the rendering of the menu in response to
      * a successful response from the api server.
@@ -107,7 +123,7 @@
      */
     p.onSuccess = function(request) {
       var response = JSON.parse(request.response);
-      this.renderNav(response.items);
+      this.render(response.items);
     };
 
     /***********************
@@ -129,7 +145,7 @@
       var itemLinkClass = "nav__link";
       if (item.items && item.items.length) {
         itemLinkClass = "nav__link--parent"
-        itemSubList = renderNavList(item.items, true);
+        itemSubList = this.renderNavList(item.items, true);
       }
       var ctx = {
         item: item,
@@ -142,46 +158,46 @@
       itemEl = hh.template('<li class="<%itemClass%>"><%itemLink%> <%itemSubList%></li>', ctx);
       return itemEl;
     };
-    // /**
-    //  * Template function that takes a list of nav items and returns a string representation of a menu's html
-    //  * @param  {Array} items          Array of objects representing a nav item
-    //  * @param  {[Boolean]} secondary  If this is true the item will be rendered as a second-level nav item: basically it will have difernt classes
-    //  * @return {String}               The markup representing the nav item
-    // //  */
-    // renderNavList = function(items, secondary) {
-    //   var className = `nav__list${secondary ? "--secondary" : ""}`;
-    //   var listStart = `<ul class="${className}">`;
-    //   var itemList = items.map(function(item){return renderNavItem(item, secondary)})
-    //   var listEnd = `</ul>`;
-    //   var listEl = listStart + itemList.join('\n') + listEnd;
-    //   return listEl;
-    // };
-    //
-    // /**
-    //  * Render function that builds the Nav and attaches event handlers
-    //  * @param  {Array} items  Array of objects representing a nav item
+    /**
+     * Template function that takes a list of nav items and returns a string representation of a menu's html
+     * @param  {Array} items          Array of objects representing a nav item
+     * @param  {[Boolean]} secondary  If this is true the item will be rendered as a second-level nav item: basically it will have difernt classes
+     * @return {String}               The markup representing the nav item
     //  */
-    // // var hugeLogoEl; // we're going to cache the innerHTML of the main nav once so we canre-aply it ove rand over
-    // renderNav = function(items) {
-    //   var mainNav = queryForMainNav();
-    //   hugeLogoEl = hugeLogoEl || mainNav.innerHTML; // this gets set once and then won't be over-written with the built innerHTML
-    //   var list = renderNavList(items);
-    //   mainNav.innerHTML = hugeLogoEl + list;
-    //   // now that we've built the list ...
-    //   // 1. cache the lists of links
-    //   var parentLinks = queryForSubMenuLinks();
-    //   var menuLinks = queryForMenuLinks();
-    //   // 2. use that cached lists inside the scope of these callback event handlers
-    //   function cachedToggleSubMenu(e) { return toggleSubMenu.call(this, e, parentLinks); }
-    //   function cachedNavigationLinkClicked(e){ navigationLinkClicked.call(this, parentLinks); }
-    //   // 3. attach the event handlers to the list of links
-    //   for (i = 0; i < parentLinks.length; i++) {
-    //     parentLinks[i].addEventListener('click', cachedToggleSubMenu);
-    //   }
-    //   for (i = 0; i < menuLinks.length; i++) {
-    //     menuLinks[i].addEventListener('click', cachedNavigationLinkClicked);
-    //   }
-    // };
+    p.renderNavList = function(items, secondary) {
+      var className = hh.template("nav__list<%if(secondary){%>--secondary<%}%>", {secondary:secondary});
+      var listStart = hh.template('<ul class="<%className%>">', {className:className});
+      var _this = this;
+      var itemList = items.map(function(item){return _this.renderNavItem(item, secondary)})
+      var listEnd = "</ul>";
+      var listEl = listStart + itemList.join('\n') + listEnd;
+      return listEl;
+    };
+    /**
+     * Render function that builds the Nav and attaches event handlers
+     * @param  {Array} items  Array of objects representing a nav item
+     */
+    // var hugeLogoEl; // we're going to cache the innerHTML of the main nav once so we canre-aply it ove rand over
+    p.render = function(items) {
+      var mainNav = this.queryForMainNav();
+      this.hugeLogoEl = this.hugeLogoEl || mainNav.innerHTML; // this gets set once and then won't be over-written with the built innerHTML
+      var list = this.renderNavList(items);
+      mainNav.innerHTML = this.hugeLogoEl + list;
+      // now that we've built the list ...
+      // 1. cache the lists of links
+      var parentLinks = this.queryForSubMenuLinks();
+      var menuLinks = this.queryForMenuLinks();
+      // 2. use that cached lists inside the scope of these callback event handlers
+      function cachedToggleSubMenu(e) { return toggleSubMenu.call(this, e, parentLinks); }
+      function cachedNavigationLinkClicked(e){ navigationLinkClicked.call(this, parentLinks); }
+      // 3. attach the event handlers to the list of links
+      for (i = 0; i < parentLinks.length; i++) {
+        parentLinks[i].addEventListener('click', cachedToggleSubMenu);
+      }
+      for (i = 0; i < menuLinks.length; i++) {
+        menuLinks[i].addEventListener('click', cachedNavigationLinkClicked);
+      }
+    };
 
     return C;
   })();
@@ -263,32 +279,35 @@
 //     toggleClass(document.body, 'menu_open');
 //   }
 //
-//   /***********************
-//    *
-//    * AWAY WE GO!
-//    * Below is the code to actually run the whole thing
-//    *
-//    ***********************/
-//   function onready(fn) {
-//     if (document.readyState != 'loading'){
-//       fn();
-//     } else {
-//       document.addEventListener('DOMContentLoaded', fn);
-//     }
-//   }
-//   onready(function(){
-//     var hamburger = queryForHamburger();
-//     var pageMask = queryForPageMask();
-//     // 1. Render the nav with the data from our Ajax request
-//     ajax({
-//       url: navURL,
-//       success: onSuccess
-//     });
-//     // 2. Add some DOM Event handlers
-//     hamburger.addEventListener('click', toggleOffCanvasMenu);
-//     pageMask.addEventListener('click', toggleOffCanvasMenu);
-//   });
-//
+  /***********************
+   *
+   * AWAY WE GO!
+   * Below is the code to actually run the whole thing
+   *
+   ***********************/
+  function onready(fn) {
+    if (document.readyState != 'loading'){
+      fn();
+    } else {
+      document.addEventListener('DOMContentLoaded', fn);
+    }
+  }
+  onready(function(){
+    // var hamburger = queryForHamburger();
+    // var pageMask = queryForPageMask();
+    // // 1. Render the nav with the data from our Ajax request
+    // ajax({
+    //   url: navURL,
+    //   success: onSuccess
+    // });
+    // // 2. Add some DOM Event handlers
+    // hamburger.addEventListener('click', toggleOffCanvasMenu);
+    // pageMask.addEventListener('click', toggleOffCanvasMenu);
+
+    var hugeNav = new HugeNav();
+    // hugeNav.fetch();
+  });
+  // "export" the "module" onto the window
   window.HugeHelpers = HugeHelpers;
-  window.HugeNav = HugeNav; // "export the class onto the window"
+  window.HugeNav = HugeNav;
 })(window);
