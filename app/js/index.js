@@ -1,5 +1,23 @@
 (function(window){
 
+
+  var HugeHelpers = {
+      /**
+       * toggle a class on an element based on the test argument
+       * @param {DOMNode} el  the element to work with
+       * @param {String} className  the class to toggle
+       * @param {Boolean} [test]  if true the class will be added if false it will be removed. Defaults to testing for presence of `className` on `el`
+       */
+      toggleClass: function(el, className, test) {
+        if (typeof test === 'undefined') {
+          test =  !el.classList.contains(className);
+        }
+        var method = (test) ? 'add' : 'remove';
+        el.classList[method](className);
+        return el;
+      }
+  }
+  
   var HugeNav = (function(){
   	var C = function(){ return constructor.apply(this, arguments); }
   	var p = C.prototype;
@@ -27,20 +45,7 @@
 
 
 
-//   /**
-//    * toggle a class on an element based on the test argument
-//    * @param {DOMNode} el  the element to work with
-//    * @param {String} className  the class to toggle
-//    * @param {Boolean} [test]  if true the class will be added if false it will be removed. Defaults to testing for presence of `className` on `el`
-//    */
-//   function toggleClass(el, className, test) {
-//     if (typeof test === 'undefined') {
-//       test =  !el.classList.contains(className);
-//     }
-//     var method = (test) ? 'add' : 'remove';
-//     el.classList[method](className);
-//     return el;
-//   }
+
 //   /**
 //    * Make Ajax requests! Pass `success` and `error` callbacks to do stuff with the returned data!
 //    * @param  {[String='GET']} options.method        What HHTP verb to use: GET, POST, PUT ... NOTE! I've only built and tested this with GET

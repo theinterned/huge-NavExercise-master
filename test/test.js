@@ -74,33 +74,62 @@
     });
   }); // 'tests the tests' end
 
-  describe('get function', function(){
-    it('should have the api url configured', function() {
-      var hn = new HugeNav();
-      expect(hn.navURL).to.equal('/api/nav.json');
+  describe('HugeNav Class', function(){
+    describe('get function', function(){
+      it('should have the api url configured', function() {
+        var hn = new HugeNav();
+        expect(hn.navURL).to.equal('/api/nav.json');
+      });
+    });
+
+    describe('DOM Query methods', function(){
+      describe('queryForMainNavLinks', function(){
+        it('should return all the .nav__link elements', function(){
+          var hn = new HugeNav();
+          var result = mockDOM();
+          var links = hn.queryForMainNavLinks();
+          expect(links).to.be.an('NodeList');
+          expect(document.getElementsByClassName('nav__link').length).to.equal(2);
+          expect(links.length).to.equal(2);
+        });
+      });
+      describe('queryForMenuLinks', function(){
+        it('should return all the .nav__link--parent menu links', function(){
+          var hn = new HugeNav();
+          var result = mockDOM();
+          var links = hn.queryForMenuLinks();
+          expect(links).to.be.a('NodeList');
+          expect(document.getElementsByClassName('nav__link--parent').length).to.equal(1);
+          expect(links.length).to.equal(1);
+        });
+      });
+      describe('queryForMainNav', function(){
+        it('should return the #main_nav', function(){
+          var hn = new HugeNav();
+          var result = mockDOM();
+          var nav = hn.queryForMainNav();
+          expect(nav).to.be.a('HTMLElement');
+          expect(document.getElementById('main_nav')).to.equal(nav);
+        });
+      });
+      describe('queryForHamburger', function(){
+        it('should return the #hamburger', function(){
+          var hn = new HugeNav();
+          var result = mockDOM();
+          var hamburger = hn.queryForHamburger();
+          expect(hamburger instanceof HTMLElement).to.be.ok; // for some reason uing `is.a('HTMLElement')` wasn't working; this is the same
+          expect(document.getElementById('hamburger')).to.equal(hamburger);
+        });
+      });
+      describe('queryForPageMask', function(){
+        it('should return #page_mask', function(){
+          var hn = new HugeNav();
+          var result = mockDOM();
+          var mask = hn.queryForPageMask();
+          expect(mask instanceof HTMLElement).to.be.ok; // for some reason uing `is.a('HTMLElement')` wasn't working; this is the same
+          expect(document.getElementById('page_mask')).to.equal(mask);
+        });
+      });
     });
   });
-
-  describe('queryForMainNavLinks', function(){
-    it('should return all the menu links', function(){
-      var hn = new HugeNav();
-      var result = mockDOM();
-      var links = hn.queryForMainNavLinks();
-      expect(links).to.be.an('NodeList');
-      expect(document.getElementsByClassName('nav__link').length).to.equal(2);
-      expect(links.length).to.equal(2);
-    });
-  });
-  describe('queryForMenuLinks', function(){
-    it('should return all the menu links', function(){
-      var hn = new HugeNav();
-      var result = mockDOM();
-      var links = hn.queryForMenuLinks();
-      expect(links).to.be.a('NodeList');
-      expect(document.getElementsByClassName('nav__link--parent').length).to.equal(1);
-      expect(links.length).to.equal(1);
-    });
-  });
-
-
 })(window);
