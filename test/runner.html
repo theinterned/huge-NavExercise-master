@@ -7,7 +7,29 @@
     <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
   </head>
   <body>
-    <div id="mock_dom"></div>
+
+    <div id="mock_dom">
+      <div class="page_mask" id="page_mask"></div>
+      <header class="header" role="banner">
+        <a class="hamburger" id="hamburger">Menu</a>
+      </header>
+      <nav class="header__nav" role="navigation" id="main_nav">
+        <a class="huge_logo" href="/">
+          <h1 class="huge_logo__type" id="huge_logo"><span class="hide">HUGE</span></h1>
+        </a>
+      </nav>
+      <main class="main" role="main">
+        <figure class="hero">
+          <img src="/images/background-image.jpg" />
+        </figure>
+        <article class="content">
+          <h2 class="content__h1"><span class="wrap">Get paid for giving a shit.</span></h2>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        </article>
+      </main>
+      <footer class="copyright">&copy; 2014 Huge. All Rights Reserved.</footer>
+    </div>
+
     <script src="../node_modules/mocha/mocha.js"></script>
     <script src="../node_modules/chai/chai.js"></script>
     <script>

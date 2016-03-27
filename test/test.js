@@ -8,10 +8,6 @@
   /////////////////////////
   function mockMenu() {
     html = [
-      '<nav class="header__nav" role="navigation" id="main_nav">',
-      '<a class="huge_logo" href="/">',
-      '<h1 class="huge_logo__type" id="huge_logo"><span class="hide">HUGE</span></h1>',
-      '</a>'
       '<nav class="main_nav" id="main_nav" role="nav">',
       '<ul class="nav__list">',
       '<li class="nav__item">',
@@ -23,19 +19,23 @@
       '<li class="nav__item ">',
       '<a class="nav__link--parent" href="#second_link">A second link</a>',
       '</li>',
-      '</ul>',
-      '</nav>'
     ];
     return html.join('');
   }
-  function mockHTMLString() {
-    var  menu = mockMenu();
-    return menu;
+  function mockLogo() {
+    html = [
+      '<a class="huge_logo" href="/">',
+      '<h1 class="huge_logo__type" id="huge_logo"><span class="hide">HUGE</span></h1>',
+      '</a>'
+    ];
+    return html.join('');
   }
   function mockDOM() {
     var mockRoot = document.getElementById('mock_dom');
-    var html = mockHTMLString();
-    mockRoot.innerHTML = html;
+    var menu = mockMenu();
+    var logo =  mockLogo();
+    var nav = document.getElementById('main_nav');
+    nav.innerHTML = logo + menu;
     return mockRoot;
   }
 
@@ -45,10 +45,9 @@
         expect(mockMenu()).to.be.a("string");
       });
     });
-    describe('mockHTMLString', function(){
-      it('should return the dom as a string', function(){
-        var expected = mockMenu()
-        expect(mockHTMLString()).to.equal(expected);
+    describe('mockLogo', function(){
+      it('should return the logo dom as a string', function(){
+        expect(mockLogo()).to.be.a("string");
       });
     });
     describe('mockDOM', function(){
@@ -65,17 +64,12 @@
         expect(result).to.equal(mockDOMNode);
         expect(result).to.have.property('parentElement');
         expect(result.parentElement).to.equal(document.body);
-        expect(result.children.length).to.equal(1);
-        expect(result.children[0].nodeName).to.equal("UL");
       });
       it('should render a .nav__list', function(){
         var result = mockDOM();
-        var list = result.getElementsByClassName('nav__list');
-        var firstChild = result.children[0];
-        expect(list[0]).to.equal(firstChild);
-        expect(document.getElementsByClassName('nav__item').length).to.equal(3);
-        expect(document.getElementsByClassName('nav__link').length).to.equal(2);
-        expect(document.getElementsByClassName('nav__link--parent').length).to.equal(1);
+        expect(result.getElementsByClassName('nav__item').length).to.equal(3);
+        expect(result.getElementsByClassName('nav__link').length).to.equal(2);
+        expect(result.getElementsByClassName('nav__link--parent').length).to.equal(1);
       });
     });
   }); // 'tests the tests' end
