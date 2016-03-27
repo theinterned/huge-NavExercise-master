@@ -15,6 +15,40 @@
         var method = (test) ? 'add' : 'remove';
         el.classList[method](className);
         return el;
+      },
+      /**
+       * Make Ajax requests! Pass `success` and `error` callbacks to do stuff with the returned data!
+       * @param  {[String='GET']} options.method        What HHTP verb to use: GET, POST, PUT ... NOTE! I've only built and tested this with GET
+       * @param  {[String='/']} options.url             The url to make the request to
+       * @param  {[function(request)]} options.success  Callback invoked on successful response from the server. Passed the XMLHttpRequest object which contains the response as well as other info (see docs: https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest)
+       * @param  {[function(request)]} options.error    Callback invoked on error response from the server. Passed the XMLHttpRequest object which contains the response as well as other info (see docs: https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest)
+       * @return {XMLHttpRequest}                       The XMLHttpRequest object that is handling the request
+       */
+      ajax: function(options) {
+        var options = options || {};
+        var defaults = {
+          method: 'GET',
+          url: '/',
+          success: function(request){ console.info(request.responseText, request); },
+          error: function(request){ console.error(request.responseText, request); }
+        }
+        var args = Object.assign({}, defaults, options);
+        var request = new XMLHttpRequest();
+        request.open(args.method, args.url, true);
+        request.onload = function() {
+          if (request.status >= 200 && request.status < 400) {
+            // Success!
+            return args.success(request);
+          } else {
+            // We reached our target server, but it returned an error
+            args.error(request);
+          }
+        };
+        request.onerror = function() {
+          // There was a connection error of some sort
+          args.error(request);
+        };
+        return request.send();
       }
   }
 
@@ -41,46 +75,9 @@
   })();
 
   console.log('loaded');
-  // app config
 
 
 
-
-//   /**
-//    * Make Ajax requests! Pass `success` and `error` callbacks to do stuff with the returned data!
-//    * @param  {[String='GET']} options.method        What HHTP verb to use: GET, POST, PUT ... NOTE! I've only built and tested this with GET
-//    * @param  {[String='/']} options.url             The url to make the request to
-//    * @param  {[function(request)]} options.success  Callback invoked on successful response from the server. Passed the XMLHttpRequest object which contains the response as well as other info (see docs: https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest)
-//    * @param  {[function(request)]} options.error    Callback invoked on error response from the server. Passed the XMLHttpRequest object which contains the response as well as other info (see docs: https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest)
-//    * @return {XMLHttpRequest}                       The XMLHttpRequest object that is handling the request
-//    */
-//   function get(options) {
-//     var options = options || {};
-//     var defaults = {
-//       method: 'GET',
-//       url: '/',
-//       success: function(request){ console.info(request.responseText, request); },
-//       error: function(request){ console.error(request.responseText, request); }
-//     }
-//     var args = Object.assign({}, defaults, options);
-//     var request = new XMLHttpRequest();
-//     request.open(args.method, args.url, true);
-//     request.onload = function() {
-//       if (request.status >= 200 && request.status < 400) {
-//         // Success!
-//         return args.success(request);
-//       } else {
-//         // We reached our target server, but it returned an error
-//         args.error(request);
-//       }
-//     };
-//     request.onerror = function() {
-//       // There was a connection error of some sort
-//       args.error(request);
-//     };
-//     return request.send();
-//   }
-//
 //   /**
 //    * Ajax success handler - This kicks off the rendering of the menu in response to
 //    * a successful response from the api server.
@@ -245,7 +242,7 @@
 //     var hamburger = queryForHamburger();
 //     var pageMask = queryForPageMask();
 //     // 1. Render the nav with the data from our Ajax request
-//     get({
+//     ajax({
 //       url: navURL,
 //       success: onSuccess
 //     });
