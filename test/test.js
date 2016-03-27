@@ -82,6 +82,49 @@
       });
     });
 
+    describe('Helpers', function(){
+      describe('toggleClass', function(){
+        it("should add the passed class to an element if the element doesn't have that class", function(){
+          var body = document.body;
+          var bodyClasses = body.classList;
+          bodyClasses.remove('foo');
+          expect(bodyClasses.contains('foo')).not.to.be.ok;
+          HugeHelpers.toggleClass(body, 'foo');
+          expect(bodyClasses.contains('foo')).to.be.ok;
+        });
+        it("should remove the passed class to an element if the element doesn't have that class", function(){
+          var body = document.body;
+          var bodyClasses = body.classList;
+          bodyClasses.add('foo');
+          expect(bodyClasses.contains('foo')).to.be.ok;
+          HugeHelpers.toggleClass(body, 'foo');
+          expect(bodyClasses.contains('foo')).not.to.be.ok;
+        });
+        it("should add the passed class if the truth test is truthy", function(){
+          var body = document.body;
+          var bodyClasses = body.classList;
+          bodyClasses.remove('foo');
+          expect(bodyClasses.contains('foo')).not.to.be.ok;
+          HugeHelpers.toggleClass(body, 'foo', true);
+          expect(bodyClasses.contains('foo')).to.be.ok;
+          HugeHelpers.toggleClass(body, 'foo', true); // still true
+          expect(bodyClasses.contains('foo')).to.be.ok;
+        });
+        it("should remove the passed class if the truth test is truthy", function(){
+          var body = document.body;
+          var bodyClasses = body.classList;
+          bodyClasses.remove('foo');
+          expect(bodyClasses.contains('foo')).not.to.be.ok;
+          HugeHelpers.toggleClass(body, 'foo', false);
+          expect(bodyClasses.contains('foo')).not.to.be.ok;
+          bodyClasses.add('foo');
+          expect(bodyClasses.contains('foo')).to.be.ok;
+          HugeHelpers.toggleClass(body, 'foo', false);
+          expect(bodyClasses.contains('foo')).not.to.be.ok;
+        });
+      });
+    });
+
     describe('DOM Query methods', function(){
       describe('queryForMainNavLinks', function(){
         it('should return all the .nav__link elements', function(){

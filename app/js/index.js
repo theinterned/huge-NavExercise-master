@@ -17,7 +17,7 @@
         return el;
       }
   }
-  
+
   var HugeNav = (function(){
   	var C = function(){ return constructor.apply(this, arguments); }
   	var p = C.prototype;
@@ -254,5 +254,6 @@
 //     pageMask.addEventListener('click', toggleOffCanvasMenu);
 //   });
 //
+  window.HugeHelpers = HugeHelpers;
   window.HugeNav = HugeNav; // "export the class onto the window"
 })(window);
