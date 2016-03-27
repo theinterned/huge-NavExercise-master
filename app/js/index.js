@@ -71,6 +71,17 @@
     p.queryForHamburger = function(){ return document.getElementById('hamburger'); };
     p.queryForPageMask = function(){ return document.getElementById('page_mask'); };
 
+    /**
+     * Ajax success handler - This kicks off the rendering of the menu in response to
+     * a successful response from the api server.
+     * @param  {XMLHttpRequest} request  the server request containing the server response.
+     */
+    onSuccess = function(request) {
+      var response = JSON.parse(request.response);
+      this.renderNav(response.items);
+    }
+
+
     return C;
   })();
 
@@ -78,16 +89,6 @@
 
 
 
-//   /**
-//    * Ajax success handler - This kicks off the rendering of the menu in response to
-//    * a successful response from the api server.
-//    * @param  {XMLHttpRequest} request  the server request containing the server response.
-//    */
-//   function onSuccess(request) {
-//     var response = JSON.parse(request.response);
-//     renderNav(response.items);
-//   }
-//
 //   /***********************
 //    *
 //    * RENDERING and TEMPLATE FUNCTIONS
