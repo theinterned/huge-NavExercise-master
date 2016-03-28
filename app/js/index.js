@@ -299,7 +299,9 @@
   }
   onready(function(){
     var hugeNav = new HugeNav();
-    hugeNav.fetch();
+    if(typeof mocha === 'undefined'){ // only try to featch from the api if we aren't testing
+      hugeNav.fetch();
+    }
   });
   // "export" the "module" onto the window
   window.HugeHelpers = HugeHelpers;
