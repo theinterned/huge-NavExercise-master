@@ -44,9 +44,6 @@ gulp.task('browserSync', ['nodemon'], function(){
     browser: "google chrome",
     port: "3030",
     files: [dest+"**/*.*"],
-    // server: {
-    //   baseDir: 'app'
-    // }
   });
 });
 
@@ -59,7 +56,6 @@ gulp.task('watch', ['sass', 'browserSync'], function(){
 gulp.task('test', function () {
   util.log('###################################');
   return gulp.src([testDir+"runner.html"], { read: false })
-    // .pipe(mocha({ reporter: 'spec' }))
     .pipe(mochaPhantomJS({reporter: 'spec'}))
     .on('error', util.log);
 });
