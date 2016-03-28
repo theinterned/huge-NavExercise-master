@@ -123,11 +123,7 @@
         var hn = new HugeNav();
         expect(hn.navURL).to.equal('/api/nav.json');
       });
-      describe('onSuccess', function(){
-       it('should render the menu with the returned items')
-      });
     });
-
     describe('DOM Query methods', function(){
       describe('queryForMenuLinks', function(){
         it('should return all the .nav__link elements', function(){
