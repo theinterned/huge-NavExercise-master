@@ -60,7 +60,7 @@ gulp.task('test', function () {
     .on('error', util.log);
 });
 
-gulp.task('test:watch', function () {
+gulp.task('test:watch', ['test'], function () {
     gulp.watch([source+"**/*", testDir+"**/*", 'app.js'], ['test']);
 });
 
