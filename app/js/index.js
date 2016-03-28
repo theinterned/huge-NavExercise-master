@@ -19,9 +19,9 @@
       /**
        * taken from https://github.com/krasimir/absurd/blob/master/lib/processors/html/helpers/TemplateEngine.js
        * see http://krasimirtsonev.com/blog/article/Javascript-template-engine-in-just-20-line
-       * @param  {[type]} html    [description]
-       * @param  {[type]} options [description]
-       * @return {[type]}         [description]
+       * @param  {String} html    The template string
+       * @param  {Object} options The variables to template in
+       * @return {String}         The rendered template as a string
        */
       template: function(html, options) {
       	var re = /<%(.+?)%>/g,
