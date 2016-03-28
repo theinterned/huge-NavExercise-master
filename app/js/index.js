@@ -194,16 +194,22 @@
       // 1. cache the lists of links
       var parentLinks = this.queryForSubMenuLinks();
       var menuLinks = this.queryForMenuLinks();
-      // 2. use that cached lists inside the scope of these callback event handlers: `this` is bound to the dom node that fires the event
-      function cachedToggleSubMenu(e) { return _this.toggleSubMenu.call(_this, e, parentLinks); }
-      function cachedNavigationLinkClicked(e){ _this.navigationLinkClicked.call(_this, parentLinks); }
+      var hamburger = this.queryForHamburger();
+      var pageMask = this.queryForPageMask();
+      // 2. use that cached lists inside the scope of these callback event handlers: `this` is bound to the class instance. Get the dom node the event is attached to from event.currentTarget
+      function boundToggleSubMenu(e) { return _this.toggleSubMenu.call(_this, e, parentLinks); }
+      function boundNavigationLinkClicked(e){ _this.navigationLinkClicked.call(_this, parentLinks); }
+      function boundToggleOffCanvasMenu(e){ _this.toggleOffCanvasMenu.call(_this, e); }
       // 3. attach the event handlers to the list of links
       for (i = 0; i < parentLinks.length; i++) {
-        parentLinks[i].addEventListener('click', cachedToggleSubMenu);
+        parentLinks[i].addEventListener('click', boundToggleSubMenu);
       }
       for (i = 0; i < menuLinks.length; i++) {
-        menuLinks[i].addEventListener('click', cachedNavigationLinkClicked);
+        menuLinks[i].addEventListener('click', boundNavigationLinkClicked);
       }
+      console.log('hamburger', hamburger);
+      hamburger.addEventListener('click', boundToggleOffCanvasMenu);
+      pageMask.addEventListener('click', boundToggleOffCanvasMenu);
     }
 
     /***********************
@@ -223,10 +229,11 @@
      * @param  {[NodeList]} links   An optionally you can pass the list of all menus to avoid having to re-query for them. Defaults to querying for the list if it's not passed.
      */
     p.navigationLinkClicked = function(e, links){
+      var target = e.currentTarget;
       if (!links) {
         links = this.queryForSubMenuLinks();
       }
-      closeAllSubMenus(links, this);
+      this.closeAllSubMenus(links, target);
       document.body.classList.remove('menu_open');
     }
 
@@ -239,7 +246,6 @@
       p.toggleSubMenu = function(e, links) {
         e.preventDefault();
         var target = e.currentTarget;
-        console.log('target',target);
         if (!links) {
           links = this.queryForSubMenuLinks();
         }
@@ -263,8 +269,6 @@
           link.parentElement.classList.remove('open');
         });
         var submenuIsOpen = !!(skipLink && skipLink.parentElement.classList.contains('open'));
-        console.log(skipLink);
-        console.log(submenuIsOpen);
         hh.toggleClass(document.body, 'submenu-open', submenuIsOpen);
         return links;
       }
@@ -274,18 +278,14 @@
        * @param  {Event} e          the event that is bieng handled
        */
       p.toggleOffCanvasMenu = function(e) {
-        var target = e.currentTarget;
-        console.log('target',target);
         // close any sub-menus
-        this.closeAllSubMenus(queryForSubMenuLinks());
+        this.closeAllSubMenus(this.queryForSubMenuLinks());
         // toggle the mobile menu
-        this.toggleClass(document.body, 'menu_open');
+        hh.toggleClass(document.body, 'menu_open');
       }
 
     return C;
   })();
-
-  console.log('loaded');
 
   /***********************
    *
@@ -301,19 +301,7 @@
     }
   }
   onready(function(){
-    // var hamburger = queryForHamburger();
-    // var pageMask = queryForPageMask();
-    // // 1. Render the nav with the data from our Ajax request
-    // ajax({
-    //   url: navURL,
-    //   success: onSuccess
-    // });
-    // // 2. Add some DOM Event handlers
-    // hamburger.addEventListener('click', toggleOffCanvasMenu);
-    // pageMask.addEventListener('click', toggleOffCanvasMenu);
-
     var hugeNav = new HugeNav();
-    // hugeNav.fetch();
   });
   // "export" the "module" onto the window
   window.HugeHelpers = HugeHelpers;
