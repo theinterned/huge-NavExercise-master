@@ -115,9 +115,27 @@
         expect(bodyClasses.contains('foo')).not.to.be.ok;
       });
     });
+    describe('template', function(){
+      it('should exist', function(){
+        expect(HugeHelpers).to.respondTo('template');
+      });
+    });
+    describe('ajax', function(){
+      it('should exist', function(){
+        expect(HugeHelpers).to.respondTo('ajax');
+      });
+    });
   });
 
   describe('HugeNav Class', function(){
+    it('should exist', function(){
+      expect(HugeNav).not.to.be.undefined;
+    });
+    it('should be a class', function(){
+      var hn = new HugeNav;
+      expect(HugeNav).to.be.a('function');
+      expect(hn).to.be.an.instanceof(HugeNav);
+    });
     describe('ajax functions', function(){
       it('should have the api url configured', function() {
         var hn = new HugeNav();
