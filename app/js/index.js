@@ -91,9 +91,7 @@
   	var C = function(){ return constructor.apply(this, arguments); }
   	var p = C.prototype;
     //construct
-  	function constructor(options){
-      this.fetch();
-    };
+  	function constructor(options){};
     p.navURL = '/api/nav.json';
 
     /***********************
@@ -207,7 +205,6 @@
       for (i = 0; i < menuLinks.length; i++) {
         menuLinks[i].addEventListener('click', boundNavigationLinkClicked);
       }
-      console.log('hamburger', hamburger);
       hamburger.addEventListener('click', boundToggleOffCanvasMenu);
       pageMask.addEventListener('click', boundToggleOffCanvasMenu);
     }
@@ -302,6 +299,7 @@
   }
   onready(function(){
     var hugeNav = new HugeNav();
+    hugeNav.fetch();
   });
   // "export" the "module" onto the window
   window.HugeHelpers = HugeHelpers;
