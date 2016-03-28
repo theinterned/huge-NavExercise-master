@@ -238,13 +238,15 @@
        */
       p.toggleSubMenu = function(e, links) {
         e.preventDefault();
+        var target = e.currentTarget;
+        console.log('target',target);
         if (!links) {
           links = this.queryForSubMenuLinks();
         }
         // close any other open sub-nav
-        this.closeAllSubMenus(links, this);
+        this.closeAllSubMenus(links, target);
         // open this one if it's closed; close it if its open!
-        var parent = this.parentElement;
+        var parent = target.parentElement;
         hh.toggleClass(parent, 'open');
         hh.toggleClass(document.body, 'submenu-open', parent.classList.contains('open'));
         return parent;
@@ -261,6 +263,7 @@
           link.parentElement.classList.remove('open');
         });
         var submenuIsOpen = !!(skipLink && skipLink.parentElement.classList.contains('open'));
+        console.log(skipLink);
         console.log(submenuIsOpen);
         hh.toggleClass(document.body, 'submenu-open', submenuIsOpen);
         return links;
@@ -271,6 +274,8 @@
        * @param  {Event} e          the event that is bieng handled
        */
       p.toggleOffCanvasMenu = function(e) {
+        var target = e.currentTarget;
+        console.log('target',target);
         // close any sub-menus
         this.closeAllSubMenus(queryForSubMenuLinks());
         // toggle the mobile menu
