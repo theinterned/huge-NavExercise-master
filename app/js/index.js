@@ -17,7 +17,7 @@
         return el;
       },
       /**
-       * take from https://github.com/krasimir/absurd/blob/master/lib/processors/html/helpers/TemplateEngine.js
+       * taken from https://github.com/krasimir/absurd/blob/master/lib/processors/html/helpers/TemplateEngine.js
        * see http://krasimirtsonev.com/blog/article/Javascript-template-engine-in-just-20-line
        * @param  {[type]} html    [description]
        * @param  {[type]} options [description]
