@@ -67,3 +67,5 @@ gulp.task('test', function () {
 gulp.task('test:watch', function () {
     gulp.watch([source+"**/*", testDir+"**/*", 'app.js'], ['test']);
 });
+
+gulp.task('start', ['test', 'watch']);
